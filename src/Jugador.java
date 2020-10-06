@@ -60,7 +60,7 @@ public class Jugador {
 	
 	// Retorna un atributo aleatorio para competir
 	public Atributo atributoAleatorio() {
-		int valorRandom = (int) Math.floor(Math.random()*(Carta.cantidadAtributos()-0+1)+0);
+		int valorRandom = (int) Math.floor(Math.random()*(Carta.getCantidadAtributos()-0+1)+0);
 		return Carta.getAtributo(valorRandom);
 	}
 	

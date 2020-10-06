@@ -1,14 +1,35 @@
 
-public class Carta {
+import java.util.ArrayList;
 
-	public static int cantidadAtributos() {
-		// TODO Auto-generated method stub
-		return 0;
+public class Carta {
+	
+	private ArrayList<Atributo>atributos = new ArrayList<>();
+	private String nombre;
+	
+	
+	public Carta (String nombre, ArrayList<Atributo>atributos) {
+		this.nombre=nombre;
+		this.atributos=atributos;
+	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public void setNombre(String nuevoNombre) {
+		this.nombre=nuevoNombre;
+	}
+	
+	public ArrayList<Atributo> getAtributo(){
+		return this.atributos;
 	}
 
-	public static Atributo getAtributo(int valorRandom) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setAtributo(ArrayList<Atributo> nuevoAtribList) {
+		this.atributos=nuevoAtribList;
+	}
+	
+	public int getCantidadAtributos() {
+		return this.atributos.size();
 	}
 
 }
