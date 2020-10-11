@@ -1,3 +1,4 @@
+package JuegoCartas.Febbraro.PerezMounet;
 /** 
  * TUDAI
  * Programacion II TPE 2020
@@ -14,10 +15,19 @@ public class Jugador {
 
 	private String nombre;
 	private Mazo mazoJugador;
+	private Boolean ganoMano;
 	
+	public Boolean getGanoMano() {
+		return ganoMano;
+	}
+
+	public void setGanoMano(Boolean ganoMano) {
+		this.ganoMano = ganoMano;
+	}
+
 	// Constructor de jugador
 	// Inicia su mazo y asigna el nombre
-	Jugador(String nombre, Mazo mazoJugador) {
+	Jugador(String nombre) {
 		this.nombre = nombre;
 		this.mazoJugador = new Mazo();
 	}
@@ -27,20 +37,14 @@ public class Jugador {
 		return nombre;
 	}
 
-	// Set Nombre jugador
-	// Ver si dejamos cambiar el nombre del jugador
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	// Ver si es necesario
-//	public Mazo getMazoJugador() {
-//		return mazoJugador;
-//	}
-
 	// Retona la primer carta del mazo del jugador 
 	public Carta jugarCarta() {
-		return mazoJugador.darUna();
+		return mazoJugador.tomarUna(0);
+	}
+	
+	// Retona la primer carta del mazo del jugador 
+	public void sacarCartaMazo(int posicion) {
+		mazoJugador.sacarCarta(posicion);
 	}
 	
 	// Agrega una carta al final del mazo del jugador
@@ -58,10 +62,16 @@ public class Jugador {
 			return false;
 	}
 	
-	// Retorna un atributo aleatorio para competir
-	public Atributo atributoAleatorio() {
-		int valorRandom = (int) Math.floor(Math.random()*(Carta.getCantidadAtributos()-0+1)+0);
-		return Carta.getAtributo(valorRandom);
+	// Retorna tamanio mazo
+		public int getTamanioMazo(){
+			return mazoJugador.tamanioMazo();
+	}
+	
+	// Retorna un valor aleatorio para usar como indice en el array de Atributos para competir
+	public int valorAleatorio(Carta carta) {
+		int tamanioAtributos = carta.getCantidadAtributos();
+		int valorRandom = (int) Math.floor(Math.random()* tamanioAtributos);
+		return valorRandom;
 	}
 	
 }

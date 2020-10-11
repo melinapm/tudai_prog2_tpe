@@ -1,3 +1,4 @@
+package JuegoCartas.Febbraro.PerezMounet;
 
 import java.util.ArrayList;
 
@@ -24,12 +25,17 @@ public class Carta {
 		return this.atributos;
 	}
 
-	public void setAtributo(ArrayList<Atributo> nuevoAtribList) {
-		this.atributos=nuevoAtribList;
-	}
+//	public void setAtributo(ArrayList<Atributo> nuevoAtribList) {
+//		this.atributos=nuevoAtribList;
+//	}
 	
 	public int getCantidadAtributos() {
 		return this.atributos.size();
 	}
+	
+	public Atributo getAtributo(int posicion) {
+		return atributos.get(posicion);
+	}
+	
 
 }
