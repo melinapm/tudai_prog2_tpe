@@ -17,14 +17,6 @@ public class Jugador {
 	private Mazo mazoJugador;
 	private Boolean ganoMano;
 	
-	public Boolean getGanoMano() {
-		return ganoMano;
-	}
-
-	public void setGanoMano(Boolean ganoMano) {
-		this.ganoMano = ganoMano;
-	}
-
 	// Constructor de jugador
 	// Inicia su mazo y asigna el nombre
 	Jugador(String nombre) {
@@ -42,7 +34,17 @@ public class Jugador {
 		return mazoJugador.tomarUna(0);
 	}
 	
-	// Retona la primer carta del mazo del jugador 
+	// Get para saber si gano la mano
+	public Boolean getGanoMano() {
+		return ganoMano;
+	}
+	
+	// Set para saber si gano la mano
+	public void setGanoMano(Boolean ganoMano) {
+		this.ganoMano = ganoMano;
+	}
+
+	// Retona la carta pasada por posicion 
 	public void sacarCartaMazo(int posicion) {
 		mazoJugador.sacarCarta(posicion);
 	}

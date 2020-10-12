@@ -19,12 +19,13 @@ public class Mazo {
 
 	// Constructor Mazo
 	public Mazo(){
-		this.cartas = new ArrayList();		
+		this.cartas = new ArrayList<Carta>();		
 	}
 		
 	// Metodo para agregar una carta al mazo
 	public void agregarCarta(Carta carta) {
-		this.cartas.add(carta);
+		if (cartaCorrecta(carta))
+			this.cartas.add(carta);
 	}
 	
 	// Retorna carta de la posicion que se pasa
@@ -70,18 +71,23 @@ public class Mazo {
 	// Metodo para validar si un mazo es correcto
 	// Si el mazo no es vacio, comparo que la carta pasada por parametro
 	// tenga los mismos atributos (tamaño y nombres) que una carta del mazo.
-//	public Boolean cartaCorrecta(Carta carta) {
-//		
-//		if (!estaVacio()) {
-//			// Comparo cantidad de atributos en la 1er carta y en la nueva, si son iguales sigo
-//			if (cartas.get(0).getCantidadAtributos() == carta.getCantidadAtributos())
-//				// Por cada nombre de atributo de carta nueva lo comparo con la carta que tengo
-//				for (int i=0, j=0 ; i < cartas.get(0).getCantidadAtributos() ; i++, j++) 
-//					  if (cartas.get(0).getAtributo(i).getNombre().equalsIgnoreCase(carta.getAtributo(j).getNombre())
-//							  
-//							  
-//		}
-//	}
+	// Se toma en cuenta que los atributos en la carta estan ordenados.
+	private Boolean cartaCorrecta(Carta carta) {
+		
+		if (!estaVacio()) {
+			// Comparo cantidad de atributos en la 1er carta y en la nueva, si son iguales sigo
+			if (cartas.get(0).getCantidadAtributos() == carta.getCantidadAtributos()) {
+				// Por cada nombre de atributo de carta nueva lo comparo con la carta que tengo
+				for (int i=0; i < cartas.get(0).getCantidadAtributos() ; i++) 
+					  if (!cartas.get(0).getAtributo(i).getNombre().equalsIgnoreCase(carta.getAtributo(i).getNombre()))
+						  return false;
+			} else
+				return false;
+		}
+		
+		return true;
+		
+	}
 	
 	
 	

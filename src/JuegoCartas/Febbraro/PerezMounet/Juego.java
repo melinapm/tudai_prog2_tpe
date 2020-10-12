@@ -19,7 +19,8 @@ public class Juego {
 	private int maximoRondas;
 	
 	// Constructor de Juego
-	// Desde aqui llamo para cargar el mazoGeneral
+	// Desde aqui se llama  al cargarMazo para cargar el mazoGeneral
+	// Siempre comienza el jugador 1 la ronda
 	public Juego (Jugador jugador1, Jugador jugador2, String pathCartas, int maximoRondas) {
 		this.mazoJuego = new Mazo();
 		this.jugador1 = jugador1;
@@ -30,15 +31,17 @@ public class Juego {
 		cargarMazo(pathCartas);
 	}
 	
-	// Metodo donde esta la principal logica del juego
-	// comparaciones y demas
+	// Metodo principal del Juego
+	// Aca se itera por cada ronda y se compara si alguien ya gano
+	// o si se llego al maximo de rondas.
 	public void Jugar() {
 		
 		repartirCartas(mazoJuego, jugador1, jugador2);
 		
+					
 		for (int ronda=0 ; ronda <= maximoRondas ; ronda ++ ) {
-			System.out.println ("---------- Ronda " + ronda + "----------");
-			if (!jugador1.sinCartas() && !jugador2.sinCartas())
+			if (!jugador1.sinCartas() && !jugador2.sinCartas()) {
+				System.out.println ("---------- Ronda " + ronda + " ----------");
 				if (jugador1.getGanoMano()) {
 					jugarMano(jugador1, jugador2);
 					// Imprimir por pantalla
@@ -46,16 +49,22 @@ public class Juego {
 				else {
 					jugarMano(jugador2, jugador1); 
 					// Imprimir por pantalla
-				}
-			else if (jugador1.sinCartas())
-				System.out.println("Gano jugador 1");
-			else if (jugador2.sinCartas())
-				System.out.println("Gano jugador 2");
+				} 
+			} else if (jugador1.sinCartas()) {
+				ronda = maximoRondas;
+				System.out.println("------------- FIN DEL JUEGO -------------");
+				System.out.println("Gano " + jugador2.getNombre() + " !!!"); 
+			} else if (jugador2.sinCartas()){
+				ronda = maximoRondas;
+				System.out.println("------------- FIN DEL JUEGO -------------");
+				System.out.println("Gano " + jugador1.getNombre() + " !!!"); }
 		}
-
-		System.out.println("-----------------------------");
-		System.out.println("Se llego al maximo de rondas");	
-				
+		
+		if (!jugador1.sinCartas() && !jugador2.sinCartas()) {
+			System.out.println("------------- FIN DEL JUEGO -------------");
+			System.out.println("Se llego al maximo de rondas");	
+		}
+		
 	}
 	
 	// Reparte las cartas del mazo general a cada jugador
@@ -79,15 +88,14 @@ public class Juego {
 		Carta cartaElegidaOJ = otroJugador.jugarCarta();
 		int atributoAletorio = jugadorGanador.valorAleatorio(cartaElegidaJG);
 		
-		int valorJG = cartaElegidaJG.getAtributo(atributoAletorio).getValor();
-		int valorJO = cartaElegidaOJ.getAtributo(atributoAletorio).getValor(); 
-		
+		// Si gana el jugador que venia ganando
 		if ((cartaElegidaJG.getAtributo(atributoAletorio).getValor()) > (cartaElegidaOJ.getAtributo(atributoAletorio).getValor())) {
 			jugadorGanador.agregarCarta(cartaElegidaJG);
 			jugadorGanador.agregarCarta(cartaElegidaOJ);
 			jugadorGanador.sacarCartaMazo(0);
 			otroJugador.sacarCartaMazo(0); 
 			jugadorGanador.setGanoMano(true); }
+		// Si gana el otro jugador
 		else if ((cartaElegidaJG.getAtributo(atributoAletorio).getValor()) < (cartaElegidaOJ.getAtributo(atributoAletorio).getValor())) {
 			otroJugador.agregarCarta(cartaElegidaOJ);
 			otroJugador.agregarCarta(cartaElegidaJG);
@@ -95,6 +103,7 @@ public class Juego {
 			jugadorGanador.sacarCartaMazo(0); 
 			otroJugador.setGanoMano(true);
 			jugadorGanador.setGanoMano(false);}
+		// En caso de empate
 		else {
 			jugadorGanador.agregarCarta(cartaElegidaJG);
 			otroJugador.agregarCarta(cartaElegidaOJ);
@@ -103,6 +112,7 @@ public class Juego {
 			jugadorGanador.setGanoMano(true); 
 		}
 		
+		// Imprimo por pantalla el detalle de como salio la ronda
 		imprimirPorPantalla(jugadorGanador, otroJugador,
 				cartaElegidaJG, cartaElegidaOJ, atributoAletorio);
 		
@@ -121,11 +131,14 @@ public class Juego {
             JsonReader reader = Json.createReader(is);
             // Obtenemos el JsonObject a partir del JsonReader.
             JsonArray cartas = (JsonArray) reader.readObject().getJsonArray("cartas");
+            // Por cada carta guardo sus atributos en un array y genero la carta
             for (JsonObject carta : cartas.getValuesAs(JsonObject.class)) {
                 String nombreCarta = carta.getString("nombre");
                 JsonObject atributos = carta.getJsonObject("atributos");
                 String nombreAtributoCarta = "";
                 int valorAtributoCarta = 0;
+                // Creo el array atributo para poder crear la carta
+                // Lo borro porque sino me agrega todas las cartas al mismo array
                 ArrayList<Atributo> atributosCarta = new ArrayList<Atributo>();
                 atributosCarta.clear();
                 for (String nombreAtributo:atributos.keySet()) {
@@ -134,6 +147,7 @@ public class Juego {
                 	Atributo nuevoAtributo = new Atributo(nombreAtributoCarta, valorAtributoCarta);
                 	atributosCarta.add(nuevoAtributo);
                 }
+                // Se crea la nueva carta con todos los atributos y la agrego al mazo general
                 Carta nuevaCarta = new Carta(nombreCarta, atributosCarta);
                 mazoJuego.agregarCarta(nuevaCarta);              
             }
@@ -145,26 +159,16 @@ public class Juego {
         }
     }
 	
-	private void borrarArrayAtributos(ArrayList<Atributo> atributosCarta) {
-		for (int i=0 ; i < atributosCarta.size() ; i++)
-			atributosCarta.remove(i);
-	}
-
-
-	// Este se saca, es solo para probar si cargo bien el mazo
-	public int getTamanioMazoGNR() {
-		return mazoJuego.tamanioMazo();
-	}
-	
+	// Metodo que imprime por pantalla el resultado de la ronda
 	private void imprimirPorPantalla(Jugador j1, Jugador j2,
 			Carta cartaElegidaJ1, Carta cartaElegidaJ2, int atributoAletorio) {
 
 		System.out.println("El jugador " + j1.getNombre() 
 			+ " selecciona para competir por el atributo " 
-			+ cartaElegidaJ2.getAtributo(atributoAletorio).getNombre());
+			+ cartaElegidaJ1.getAtributo(atributoAletorio).getNombre());
 		
 		System.out.println("La carta de " + j1.getNombre() 
-			+ " es " + cartaElegidaJ2.getNombre()
+			+ " es " + cartaElegidaJ1.getNombre()
 			+ " con "
 			+ cartaElegidaJ1.getAtributo(atributoAletorio).getNombre() + " "
 			+ cartaElegidaJ1.getAtributo(atributoAletorio).getValor());
