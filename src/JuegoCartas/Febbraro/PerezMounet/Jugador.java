@@ -6,6 +6,8 @@ package JuegoCartas.Febbraro.PerezMounet;
  * 
  */
 
+import java.util.ArrayList;
+
 /**
  * @author 
  *
@@ -22,16 +24,22 @@ public class Jugador {
 	Jugador(String nombre) {
 		this.nombre = nombre;
 		this.mazoJugador = new Mazo();
+		this.ganoMano = false;
 	}
 
 	// Get Nombre jugador
 	public String getNombre() {
 		return nombre;
 	}
+	
+	// Set Nombre jugador
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	// Retona la primer carta del mazo del jugador 
 	public Carta jugarCarta() {
-		return mazoJugador.tomarUna(0);
+		return mazoJugador.tomarCartaPorPosicion(0);
 	}
 	
 	// Get para saber si gano la mano
@@ -45,14 +53,14 @@ public class Jugador {
 	}
 
 	// Retona la carta pasada por posicion 
-	public void sacarCartaMazo(int posicion) {
-		mazoJugador.sacarCarta(posicion);
+	public void obtenerCartaPorPosicion(int posicion) {
+		mazoJugador.borrarCarta(posicion);
 	}
 	
 	// Agrega una carta al final del mazo del jugador
 	// Este metodo se llama si el jugador gano la mano
 	// o si empato y se queda con la carta
-	public void agregarCarta(Carta carta) {
+	public void agregarCartaFinalMazo(Carta carta) {
 		mazoJugador.ponerCartaAlFinal(carta);
 	}
 	
@@ -68,12 +76,20 @@ public class Jugador {
 		public int getTamanioMazo(){
 			return mazoJugador.tamanioMazo();
 	}
+		
+	// Retorna un atributo aleatorio elejido para competir
+	public String getAtributoAleatorio() {
+		
+		ArrayList<Atributo> atributosCarta = new ArrayList<Atributo>(); 
+		int valorRandom = (int) Math.floor(Math.random()* atributosCarta.size());
+		
+		if (!mazoJugador.estaVacio()) {
+			atributosCarta = mazoJugador.tomarCartaPorPosicion(0).getAtributos();
+			return atributosCarta.get(valorRandom).getNombre();
+		}
+		
+		return null;
 	
-	// Retorna un valor aleatorio para usar como indice en el array de Atributos para competir
-	public int valorAleatorio(Carta carta) {
-		int tamanioAtributos = carta.getCantidadAtributos();
-		int valorRandom = (int) Math.floor(Math.random()* tamanioAtributos);
-		return valorRandom;
 	}
-	
+		
 }

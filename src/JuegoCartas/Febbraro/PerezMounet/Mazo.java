@@ -12,6 +12,8 @@ package JuegoCartas.Febbraro.PerezMounet;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Mazo {
 	
@@ -24,17 +26,17 @@ public class Mazo {
 		
 	// Metodo para agregar una carta al mazo
 	public void agregarCarta(Carta carta) {
-		if (cartaCorrecta(carta))
+		if (esCartaCorrecta(carta))
 			this.cartas.add(carta);
 	}
 	
 	// Retorna carta de la posicion que se pasa
-	public Carta tomarUna(int posicion) {
+	public Carta tomarCartaPorPosicion(int posicion) {
 		return this.cartas.get(posicion);
 	}
 	
 	// Borra la carta de la posicion que se pase por parametro
-	public void sacarCarta(int posicion) {
+	public void borrarCarta(int posicion) {
 		this.cartas.remove(posicion);
 	}
 	
@@ -72,14 +74,14 @@ public class Mazo {
 	// Si el mazo no es vacio, comparo que la carta pasada por parametro
 	// tenga los mismos atributos (tamaño y nombres) que una carta del mazo.
 	// Se toma en cuenta que los atributos en la carta estan ordenados.
-	private Boolean cartaCorrecta(Carta carta) {
+	private Boolean esCartaCorrecta(Carta carta) {
 		
 		if (!estaVacio()) {
 			// Comparo cantidad de atributos en la 1er carta y en la nueva, si son iguales sigo
 			if (cartas.get(0).getCantidadAtributos() == carta.getCantidadAtributos()) {
 				// Por cada nombre de atributo de carta nueva lo comparo con la carta que tengo
 				for (int i=0; i < cartas.get(0).getCantidadAtributos() ; i++) 
-					  if (!cartas.get(0).getAtributo(i).getNombre().equalsIgnoreCase(carta.getAtributo(i).getNombre()))
+					  if (!cartas.get(0).getAtributoPorPosicion(i).getNombre().equalsIgnoreCase(carta.getAtributoPorPosicion(i).getNombre()))
 						  return false;
 			} else
 				return false;
@@ -89,6 +91,8 @@ public class Mazo {
 		
 	}
 	
-	
-	
+	public void mezclarMazo() {
+		Collections.shuffle(cartas);		
+	}
+		
 }

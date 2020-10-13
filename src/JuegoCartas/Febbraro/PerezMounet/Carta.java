@@ -21,7 +21,7 @@ public class Carta {
 		this.nombre=nuevoNombre;
 	}
 	
-	public ArrayList<Atributo> getAtributo(){
+	public ArrayList<Atributo> getAtributos(){
 		return this.atributos;
 	}
 
@@ -29,7 +29,7 @@ public class Carta {
 		return this.atributos.size();
 	}
 	
-	public Atributo getAtributo(int posicion) {
+	public Atributo getAtributoPorPosicion(int posicion) {
 		return atributos.get(posicion);
 	}
 	

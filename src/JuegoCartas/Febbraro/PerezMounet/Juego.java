@@ -36,6 +36,7 @@ public class Juego {
 	// o si se llego al maximo de rondas.
 	public void Jugar() {
 		
+		mazoJuego.mezclarMazo();		
 		repartirCartas(mazoJuego, jugador1, jugador2);
 		
 					
@@ -73,9 +74,9 @@ public class Juego {
 	private void repartirCartas(Mazo mazo, Jugador j1, Jugador j2) {
 		for (int i=0; i < mazoJuego.tamanioMazo() ; i++) {
 			if (i%2!=0) // Si es par, va al J1
-				j1.agregarCarta(mazoJuego.tomarUna(i));
+				j1.agregarCartaFinalMazo(mazoJuego.tomarCartaPorPosicion(i));
 			else // Si es impar, va al J2
-				j2.agregarCarta(mazoJuego.tomarUna(i));
+				j2.agregarCartaFinalMazo(mazoJuego.tomarCartaPorPosicion(i));
 		}
 		mazoJuego.borrarMazo();
 	}
@@ -86,29 +87,29 @@ public class Juego {
 	private void jugarMano(Jugador jugadorGanador, Jugador otroJugador) {
 		Carta cartaElegidaJG = jugadorGanador.jugarCarta();
 		Carta cartaElegidaOJ = otroJugador.jugarCarta();
-		int atributoAletorio = jugadorGanador.valorAleatorio(cartaElegidaJG);
+		int atributoAletorio = posicionAtributo(jugadorGanador.getAtributoAleatorio(), cartaElegidaJG);
 		
 		// Si gana el jugador que venia ganando
-		if ((cartaElegidaJG.getAtributo(atributoAletorio).getValor()) > (cartaElegidaOJ.getAtributo(atributoAletorio).getValor())) {
-			jugadorGanador.agregarCarta(cartaElegidaJG);
-			jugadorGanador.agregarCarta(cartaElegidaOJ);
-			jugadorGanador.sacarCartaMazo(0);
-			otroJugador.sacarCartaMazo(0); 
+		if ((cartaElegidaJG.getAtributoPorPosicion(atributoAletorio).getValor()) > (cartaElegidaOJ.getAtributoPorPosicion(atributoAletorio).getValor())) {
+			jugadorGanador.agregarCartaFinalMazo(cartaElegidaJG);
+			jugadorGanador.agregarCartaFinalMazo(cartaElegidaOJ);
+			jugadorGanador.obtenerCartaPorPosicion(0);
+			otroJugador.obtenerCartaPorPosicion(0); 
 			jugadorGanador.setGanoMano(true); }
 		// Si gana el otro jugador
-		else if ((cartaElegidaJG.getAtributo(atributoAletorio).getValor()) < (cartaElegidaOJ.getAtributo(atributoAletorio).getValor())) {
-			otroJugador.agregarCarta(cartaElegidaOJ);
-			otroJugador.agregarCarta(cartaElegidaJG);
-			otroJugador.sacarCartaMazo(0);
-			jugadorGanador.sacarCartaMazo(0); 
+		else if ((cartaElegidaJG.getAtributoPorPosicion(atributoAletorio).getValor()) < (cartaElegidaOJ.getAtributoPorPosicion(atributoAletorio).getValor())) {
+			otroJugador.agregarCartaFinalMazo(cartaElegidaOJ);
+			otroJugador.agregarCartaFinalMazo(cartaElegidaJG);
+			otroJugador.obtenerCartaPorPosicion(0);
+			jugadorGanador.obtenerCartaPorPosicion(0); 
 			otroJugador.setGanoMano(true);
 			jugadorGanador.setGanoMano(false);}
 		// En caso de empate
 		else {
-			jugadorGanador.agregarCarta(cartaElegidaJG);
-			otroJugador.agregarCarta(cartaElegidaOJ);
-			jugadorGanador.sacarCartaMazo(0);
-			otroJugador.sacarCartaMazo(0); 
+			jugadorGanador.agregarCartaFinalMazo(cartaElegidaJG);
+			otroJugador.agregarCartaFinalMazo(cartaElegidaOJ);
+			jugadorGanador.obtenerCartaPorPosicion(0);
+			otroJugador.obtenerCartaPorPosicion(0); 
 			jugadorGanador.setGanoMano(true); 
 		}
 		
@@ -119,6 +120,14 @@ public class Juego {
 	}
 	
 	
+	private int posicionAtributo(String atributoAleatorio, Carta cartaElegidaJG) {
+		for (int i=0; i < cartaElegidaJG.getAtributos().size() ; i++)
+			if (cartaElegidaJG.getAtributoPorPosicion(i).getNombre().equals(atributoAleatorio))
+				return i;
+		
+		return -1;
+	}
+
 	// Metodo que se invoca al comenzar el juego y carga el mazo
 	// que se encuentra en el path.
 	private void cargarMazo(String jsonFile) {
@@ -165,19 +174,19 @@ public class Juego {
 
 		System.out.println("El jugador " + j1.getNombre() 
 			+ " selecciona para competir por el atributo " 
-			+ cartaElegidaJ1.getAtributo(atributoAletorio).getNombre());
+			+ cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getNombre());
 		
 		System.out.println("La carta de " + j1.getNombre() 
 			+ " es " + cartaElegidaJ1.getNombre()
 			+ " con "
-			+ cartaElegidaJ1.getAtributo(atributoAletorio).getNombre() + " "
-			+ cartaElegidaJ1.getAtributo(atributoAletorio).getValor());
+			+ cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getNombre() + " "
+			+ cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor());
 		
 		System.out.println("La carta de " + j2.getNombre() 
 			+ " es " + cartaElegidaJ2.getNombre()
 			+ " con "
-			+ cartaElegidaJ2.getAtributo(atributoAletorio).getNombre() + " "
-			+ cartaElegidaJ2.getAtributo(atributoAletorio).getValor());
+			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getNombre() + " "
+			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor());
 		
 		// Ver tema empate
 		if (j1.getGanoMano())
