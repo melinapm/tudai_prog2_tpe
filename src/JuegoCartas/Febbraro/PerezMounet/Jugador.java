@@ -18,11 +18,13 @@ public class Jugador {
 	private String nombre;
 	private Mazo mazoJugador;
 	private Boolean ganoMano;
+	private Estrategia estrategiaJugador;
 	
 	// Constructor de jugador
 	// Inicia su mazo y asigna el nombre
-	Jugador(String nombre) {
+	Jugador(String nombre, Estrategia estrategiaJugador) {
 		this.nombre = nombre;
+		this.estrategiaJugador = estrategiaJugador;
 		this.mazoJugador = new Mazo();
 		this.ganoMano = false;
 	}
@@ -77,15 +79,19 @@ public class Jugador {
 			return mazoJugador.tamanioMazo();
 	}
 		
+	public String getEstrategiaJugador() {
+			return estrategiaJugador.getNombreEstrategia();
+		}
+
+	public void setEstrategiaJugador(Estrategia estrategiaJugador) {
+			this.estrategiaJugador = estrategiaJugador;
+		}
+
 	// Retorna un atributo aleatorio elejido para competir
 	public String getAtributoAleatorio() {
 		
-		ArrayList<Atributo> atributosCarta = new ArrayList<Atributo>(); 
-		int valorRandom = (int) Math.floor(Math.random()* atributosCarta.size());
-		
 		if (!mazoJugador.estaVacio()) {
-			atributosCarta = mazoJugador.tomarCartaPorPosicion(0).getAtributos();
-			return atributosCarta.get(valorRandom).getNombre();
+			return estrategiaJugador.getAtributo(mazoJugador.tomarCartaPorPosicion(0));
 		}
 		
 		return null;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Carta {
 	
-	private ArrayList<Atributo>atributos = new ArrayList<>();
+	private ArrayList<Atributo>atributos = new ArrayList<Atributo>();
 	private String nombre;
 	
 	
@@ -22,7 +22,7 @@ public class Carta {
 	}
 	
 	public ArrayList<Atributo> getAtributos(){
-		return this.atributos;
+		return (ArrayList<Atributo>) this.atributos.clone();
 	}
 
 	public int getCantidadAtributos() {
