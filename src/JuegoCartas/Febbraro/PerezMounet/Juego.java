@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+
+import JuegoCartas.Febbraro.PerezMounet.pocimas.Pocima;
 
 public class Juego {
 
@@ -17,6 +20,7 @@ public class Juego {
 	private Jugador jugador1;
 	private Jugador jugador2;
 	private int maximoRondas;
+	private ArrayList<Pocima> pocimasJuego;
 	
 	// Constructor de Juego
 	// Desde aqui se llama  al cargarMazo para cargar el mazoGeneral
@@ -28,7 +32,12 @@ public class Juego {
 		this.maximoRondas = maximoRondas;
 		jugador1.setGanoMano(true);
 		jugador2.setGanoMano(false);
+		pocimasJuego = new ArrayList<Pocima>();
 		cargarMazo(pathCartas);
+	}
+	
+	public void agregarPocima (Pocima pocima) {
+		pocimasJuego.add(pocima);
 	}
 	
 	// Metodo principal del Juego
@@ -36,9 +45,14 @@ public class Juego {
 	// o si se llego al maximo de rondas.
 	public void Jugar() {
 		
+		if (pocimasJuego.size() != 0) {
+			Collections.shuffle(pocimasJuego);
+			for (int i=0; i < pocimasJuego.size(); i++)
+				mazoJuego.tomarCartaPorPosicion(i).setPocima(pocimasJuego.get(i));
+		}
+		
 		mazoJuego.mezclarMazo();		
 		repartirCartas(mazoJuego, jugador1, jugador2);
-		
 					
 		for (int ronda=0 ; ronda <= maximoRondas ; ronda ++ ) {
 			if (!jugador1.sinCartas() && !jugador2.sinCartas()) {
@@ -180,13 +194,23 @@ public class Juego {
 			+ " es " + cartaElegidaJ1.getNombre()
 			+ " con "
 			+ cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getNombre() + " "
-			+ cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor());
+			+ cartaElegidaJ1.getAtributoPorPosicionSinPocima(atributoAletorio).getValor());
+
+		if (cartaElegidaJ1.getPocima() != null)
+			System.out.println("Se aplico la pocima" + cartaElegidaJ1.getPocima().getNombrePocima()
+				+ " valor resultante "+ 
+				cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor());
 		
 		System.out.println("La carta de " + j2.getNombre() 
 			+ " es " + cartaElegidaJ2.getNombre()
 			+ " con "
 			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getNombre() + " "
 			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor());
+		
+		if (cartaElegidaJ2.getPocima() != null)
+			System.out.println("Se aplico la pocima" + cartaElegidaJ2.getPocima().getNombrePocima()
+				+ " valor resultante "+ 
+				cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor());
 		
 		// Ver tema empate
 		if (j1.getGanoMano())

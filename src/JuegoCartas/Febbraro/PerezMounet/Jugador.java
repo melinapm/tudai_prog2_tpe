@@ -8,6 +8,8 @@ package JuegoCartas.Febbraro.PerezMounet;
 
 import java.util.ArrayList;
 
+import JuegoCartas.Febbraro.PerezMounet.estrategias.Estrategia;
+
 /**
  * @author 
  *

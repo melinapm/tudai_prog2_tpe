@@ -1,4 +1,6 @@
-package JuegoCartas.Febbraro.PerezMounet;
+package JuegoCartas.Febbraro.PerezMounet.estrategias;
+
+import JuegoCartas.Febbraro.PerezMounet.Carta;
 
 public abstract class Estrategia {
 

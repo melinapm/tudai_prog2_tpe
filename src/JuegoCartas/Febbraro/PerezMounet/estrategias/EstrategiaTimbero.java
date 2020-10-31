@@ -1,6 +1,9 @@
-package JuegoCartas.Febbraro.PerezMounet;
+package JuegoCartas.Febbraro.PerezMounet.estrategias;
 
 import java.util.ArrayList;
+
+import JuegoCartas.Febbraro.PerezMounet.Atributo;
+import JuegoCartas.Febbraro.PerezMounet.Carta;
 
 public class EstrategiaTimbero extends Estrategia {
 

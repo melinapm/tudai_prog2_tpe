@@ -2,15 +2,19 @@ package JuegoCartas.Febbraro.PerezMounet;
 
 import java.util.ArrayList;
 
+import JuegoCartas.Febbraro.PerezMounet.pocimas.Pocima;
+
 public class Carta {
 	
 	private ArrayList<Atributo>atributos = new ArrayList<Atributo>();
 	private String nombre;
+	private Pocima pocima;
 	
 	
 	public Carta (String nombre, ArrayList<Atributo>atributos) {
 		this.nombre=nombre;
 		this.atributos=atributos;
+		this.pocima = null;
 	}
 	
 	public String getNombre() {
@@ -30,8 +34,21 @@ public class Carta {
 	}
 	
 	public Atributo getAtributoPorPosicion(int posicion) {
+		if (pocima != null)
+			pocima.calcular(atributos.get(posicion));
 		return atributos.get(posicion);
 	}
 	
+	public Atributo getAtributoPorPosicionSinPocima(int posicion) {
+		return atributos.get(posicion);
+	}
+	
+	public Pocima getPocima() {
+		return pocima;
+	}
+
+	public void setPocima(Pocima pocima) {
+		this.pocima = pocima;
+	}	
 
 }
