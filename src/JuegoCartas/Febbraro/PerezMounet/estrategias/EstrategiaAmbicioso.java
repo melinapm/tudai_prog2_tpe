@@ -1,8 +1,6 @@
 package JuegoCartas.Febbraro.PerezMounet.estrategias;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import JuegoCartas.Febbraro.PerezMounet.Atributo;
 import JuegoCartas.Febbraro.PerezMounet.Carta;

@@ -6,8 +6,6 @@ package JuegoCartas.Febbraro.PerezMounet;
  * 
  */
 
-import java.util.ArrayList;
-
 import JuegoCartas.Febbraro.PerezMounet.estrategias.Estrategia;
 
 /**
@@ -19,7 +17,6 @@ public class Jugador {
 
 	private String nombre;
 	private Mazo mazoJugador;
-	private Boolean ganoMano;
 	private Estrategia estrategiaJugador;
 	
 	// Constructor de jugador
@@ -28,7 +25,6 @@ public class Jugador {
 		this.nombre = nombre;
 		this.estrategiaJugador = estrategiaJugador;
 		this.mazoJugador = new Mazo();
-		this.ganoMano = false;
 	}
 
 	// Get Nombre jugador
@@ -46,16 +42,6 @@ public class Jugador {
 		return mazoJugador.tomarCartaPorPosicion(0);
 	}
 	
-	// Get para saber si gano la mano
-	public Boolean getGanoMano() {
-		return ganoMano;
-	}
-	
-	// Set para saber si gano la mano
-	public void setGanoMano(Boolean ganoMano) {
-		this.ganoMano = ganoMano;
-	}
-
 	// Retona la carta pasada por posicion 
 	public void obtenerCartaPorPosicion(int posicion) {
 		mazoJugador.borrarCarta(posicion);

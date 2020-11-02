@@ -1,9 +1,5 @@
 package JuegoCartas.Febbraro.PerezMounet.estrategias;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 import JuegoCartas.Febbraro.PerezMounet.Carta;
 
 public class EstrategiaObstinado extends Estrategia {
@@ -15,7 +11,7 @@ public class EstrategiaObstinado extends Estrategia {
 		this.mismoAtributo = null;
 	}
 
-	public String getMismoAtributo() {
+	private String getMismoAtributo() {
 		return mismoAtributo;
 	}
 

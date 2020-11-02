@@ -34,8 +34,11 @@ public class Carta {
 	}
 	
 	public Atributo getAtributoPorPosicion(int posicion) {
-		if (pocima != null)
-			pocima.calcular(atributos.get(posicion));
+		Atributo atributoCopia = new Atributo(atributos.get(posicion).getNombre(), atributos.get(posicion).getValor());
+		if (pocima != null) {
+			atributoCopia.setValor(pocima.calcular(atributos.get(posicion)));
+			return atributoCopia;
+		}
 		return atributos.get(posicion);
 	}
 	

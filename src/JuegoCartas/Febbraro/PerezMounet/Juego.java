@@ -19,6 +19,7 @@ public class Juego {
 	private Mazo mazoJuego;
 	private Jugador jugador1;
 	private Jugador jugador2;
+	private Jugador jugadorGanador;
 	private int maximoRondas;
 	private ArrayList<Pocima> pocimasJuego;
 	
@@ -30,8 +31,7 @@ public class Juego {
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
 		this.maximoRondas = maximoRondas;
-		jugador1.setGanoMano(true);
-		jugador2.setGanoMano(false);
+		this.jugadorGanador = jugador1;
 		pocimasJuego = new ArrayList<Pocima>();
 		cargarMazo(pathCartas);
 	}
@@ -45,26 +45,23 @@ public class Juego {
 	// o si se llego al maximo de rondas.
 	public void Jugar() {
 		
+		mazoJuego.mezclarMazo();
+		
 		if (pocimasJuego.size() != 0) {
 			Collections.shuffle(pocimasJuego);
 			for (int i=0; i < pocimasJuego.size(); i++)
 				mazoJuego.tomarCartaPorPosicion(i).setPocima(pocimasJuego.get(i));
 		}
-		
-		mazoJuego.mezclarMazo();		
+			
 		repartirCartas(mazoJuego, jugador1, jugador2);
 					
 		for (int ronda=0 ; ronda <= maximoRondas ; ronda ++ ) {
 			if (!jugador1.sinCartas() && !jugador2.sinCartas()) {
 				System.out.println ("---------- Ronda " + ronda + " ----------");
-				if (jugador1.getGanoMano()) {
+				if (jugadorGanador == jugador1) 
 					jugarMano(jugador1, jugador2);
-					// Imprimir por pantalla
-				}
-				else {
-					jugarMano(jugador2, jugador1); 
-					// Imprimir por pantalla
-				} 
+				else
+					jugarMano(jugador2, jugador1);
 			} else if (jugador1.sinCartas()) {
 				ronda = maximoRondas;
 				System.out.println("------------- FIN DEL JUEGO -------------");
@@ -98,38 +95,38 @@ public class Juego {
 	// En este metodo el jugador ganador elije el atributo de forma aleatoria
 	// se guardan las cartas que van a jugar cada jugador y se compara
 	// quien gano
-	private void jugarMano(Jugador jugadorGanador, Jugador otroJugador) {
-		Carta cartaElegidaJG = jugadorGanador.jugarCarta();
-		Carta cartaElegidaOJ = otroJugador.jugarCarta();
-		int atributoAletorio = posicionAtributo(jugadorGanador.getAtributoAleatorio(), cartaElegidaJG);
+	private void jugarMano(Jugador jugador1, Jugador jugador2) {
+		Boolean empate = false;
+		
+		Carta cartaElegidaJ1 = jugador1.jugarCarta();
+		Carta cartaElegidaJ2 = jugador2.jugarCarta();
+		int atributoAletorio = posicionAtributo(jugador1.getAtributoAleatorio(), cartaElegidaJ1);
 		
 		// Si gana el jugador que venia ganando
-		if ((cartaElegidaJG.getAtributoPorPosicion(atributoAletorio).getValor()) > (cartaElegidaOJ.getAtributoPorPosicion(atributoAletorio).getValor())) {
-			jugadorGanador.agregarCartaFinalMazo(cartaElegidaJG);
-			jugadorGanador.agregarCartaFinalMazo(cartaElegidaOJ);
-			jugadorGanador.obtenerCartaPorPosicion(0);
-			otroJugador.obtenerCartaPorPosicion(0); 
-			jugadorGanador.setGanoMano(true); }
+		if ((cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor()) > (cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor())) {
+			jugador1.agregarCartaFinalMazo(cartaElegidaJ1);
+			jugador1.agregarCartaFinalMazo(cartaElegidaJ2);
+			jugador1.obtenerCartaPorPosicion(0);
+			jugador2.obtenerCartaPorPosicion(0);}
 		// Si gana el otro jugador
-		else if ((cartaElegidaJG.getAtributoPorPosicion(atributoAletorio).getValor()) < (cartaElegidaOJ.getAtributoPorPosicion(atributoAletorio).getValor())) {
-			otroJugador.agregarCartaFinalMazo(cartaElegidaOJ);
-			otroJugador.agregarCartaFinalMazo(cartaElegidaJG);
-			otroJugador.obtenerCartaPorPosicion(0);
-			jugadorGanador.obtenerCartaPorPosicion(0); 
-			otroJugador.setGanoMano(true);
-			jugadorGanador.setGanoMano(false);}
+		else if ((cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor()) < (cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor())) {
+			jugador2.agregarCartaFinalMazo(cartaElegidaJ2);
+			jugador2.agregarCartaFinalMazo(cartaElegidaJ1);
+			jugador2.obtenerCartaPorPosicion(0);
+			jugador1.obtenerCartaPorPosicion(0);
+			jugadorGanador =  jugador2; }
 		// En caso de empate
-		else {
-			jugadorGanador.agregarCartaFinalMazo(cartaElegidaJG);
-			otroJugador.agregarCartaFinalMazo(cartaElegidaOJ);
-			jugadorGanador.obtenerCartaPorPosicion(0);
-			otroJugador.obtenerCartaPorPosicion(0); 
-			jugadorGanador.setGanoMano(true); 
+		else if ((cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor()) == (cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor())) {
+			jugador1.agregarCartaFinalMazo(cartaElegidaJ1);
+			jugador2.agregarCartaFinalMazo(cartaElegidaJ2);
+			jugador1.obtenerCartaPorPosicion(0);
+			jugador2.obtenerCartaPorPosicion(0);
+			empate = true;
 		}
 		
 		// Imprimo por pantalla el detalle de como salio la ronda
-		imprimirPorPantalla(jugadorGanador, otroJugador,
-				cartaElegidaJG, cartaElegidaOJ, atributoAletorio);
+		imprimirPorPantalla(jugador1, jugador2,
+				cartaElegidaJ1, cartaElegidaJ2, atributoAletorio, empate);
 		
 	}
 	
@@ -183,8 +180,8 @@ public class Juego {
     }
 	
 	// Metodo que imprime por pantalla el resultado de la ronda
-	private void imprimirPorPantalla(Jugador j1, Jugador j2,
-			Carta cartaElegidaJ1, Carta cartaElegidaJ2, int atributoAletorio) {
+	private void imprimirPorPantalla(Jugador j1, 
+			Jugador j2, Carta cartaElegidaJ1, Carta cartaElegidaJ2, int atributoAletorio, Boolean empate) {
 
 		System.out.println("El jugador " + j1.getNombre() 
 			+ " selecciona para competir por el atributo " 
@@ -197,7 +194,7 @@ public class Juego {
 			+ cartaElegidaJ1.getAtributoPorPosicionSinPocima(atributoAletorio).getValor());
 
 		if (cartaElegidaJ1.getPocima() != null)
-			System.out.println("Se aplico la pocima" + cartaElegidaJ1.getPocima().getNombrePocima()
+			System.out.println("Se aplico la pocima " + cartaElegidaJ1.getPocima().getNombrePocima()
 				+ " valor resultante "+ 
 				cartaElegidaJ1.getAtributoPorPosicion(atributoAletorio).getValor());
 		
@@ -205,18 +202,17 @@ public class Juego {
 			+ " es " + cartaElegidaJ2.getNombre()
 			+ " con "
 			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getNombre() + " "
-			+ cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor());
+			+ cartaElegidaJ2.getAtributoPorPosicionSinPocima(atributoAletorio).getValor());
 		
 		if (cartaElegidaJ2.getPocima() != null)
-			System.out.println("Se aplico la pocima" + cartaElegidaJ2.getPocima().getNombrePocima()
+			System.out.println("Se aplico la pocima " + cartaElegidaJ2.getPocima().getNombrePocima()
 				+ " valor resultante "+ 
 				cartaElegidaJ2.getAtributoPorPosicion(atributoAletorio).getValor());
 		
-		// Ver tema empate
-		if (j1.getGanoMano())
-			System.out.println("Gana la ronda " + j1.getNombre() + ".");
-		else if (j2.getGanoMano())
-			System.out.println("Gana la ronda " + j2.getNombre() + ".");
+		if (empate)
+			System.out.println("Hubo un empate.");
+		else
+			System.out.println("Gana la ronda " + jugadorGanador.getNombre() + ".");
 		
 		System.out.println(j1.getNombre()
 			+ " posee ahora " + j1.getTamanioMazo() + " cartas y "

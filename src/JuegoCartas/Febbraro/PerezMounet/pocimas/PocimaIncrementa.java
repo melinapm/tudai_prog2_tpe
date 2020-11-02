@@ -6,13 +6,13 @@ public class PocimaIncrementa extends Pocima {
 
 	private double porcentaje;
 		
-	public PocimaIncrementa(double porcentaje) {
-		super();
+	public PocimaIncrementa(String nombre, double porcentaje) {
+		this.nombre = nombre;
 		this.porcentaje = porcentaje;
 	}
-
+	
 	public int calcular (Atributo atributo) {
-		return (atributo.getValor()+(atributo.getValor() * (int) porcentaje/100));
+		return (int) (atributo.getValor()+(atributo.getValor() * porcentaje/100));
 	}
 
 }

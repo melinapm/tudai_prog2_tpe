@@ -2,13 +2,13 @@ package JuegoCartas.Febbraro.PerezMounet.pocimas;
 
 import JuegoCartas.Febbraro.PerezMounet.Atributo;
 
-public class PocimaAtributo extends Pocima{
+public class PocimaSelectiva extends Pocima{
 	
 	private String nombreAtributo;
 	private double porcentaje;
 		
-	public PocimaAtributo(String nombreAtributo, double porcentaje) {
-		super();
+	public PocimaSelectiva(String nombre, String nombreAtributo, double porcentaje) {
+		this.nombre = nombre;
 		this.nombreAtributo = nombreAtributo;
 		this.porcentaje = porcentaje;
 	}

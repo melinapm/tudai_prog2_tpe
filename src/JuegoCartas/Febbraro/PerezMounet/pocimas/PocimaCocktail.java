@@ -8,8 +8,8 @@ public class PocimaCocktail extends Pocima {
 
 	private ArrayList<Pocima> pocimas;
 	
-	public PocimaCocktail(ArrayList<Pocima> pocimas) {
-		super();
+	public PocimaCocktail(String nombre) {
+		this.nombre = nombre;
 		this.pocimas = new ArrayList<Pocima>();
 	}
 
@@ -19,10 +19,10 @@ public class PocimaCocktail extends Pocima {
 	
 	@Override
 	public int calcular(Atributo atributo) {
-		int totalValor=0;
+		Atributo cloneAtributo = new Atributo(atributo.getNombre(), atributo.getValor());
 		if (pocimas.size() != 0)
 			for (Pocima elemento:pocimas)
-				totalValor =+ elemento.calcular(atributo);
-		return totalValor;
+				cloneAtributo.setValor(elemento.calcular(cloneAtributo));
+		return cloneAtributo.getValor();
 	}
 }
