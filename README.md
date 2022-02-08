@@ -2,11 +2,11 @@
 
 ### Juego de Cartas
 
-    Integrante 1: Perez Mounet Melina
-    Integrante 1 email: meli.pm@gmail.com
+    Integrante 1: Lorena Febbraro
+    Integrante 1 email: febbweb@gmail.com
 
-    Integrante 2: Lorena Febbraro
-    Integrante 2 email: febbweb@gmail.com
+    Integrante 2: Perez Mounet Melina
+    Integrante 3 email: meli.pm@gmail.com
 
 ### Tecnologias 🛠️
 
